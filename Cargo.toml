@@ -105,6 +105,10 @@ handlebars = "1.1.0"
 soup = "0.4.1"
 regex = "1.1.6"
 
+# Prometheus metrics
+rocket_prometheus = { git = 'https://github.com/Skeen/rocket_prometheus' }
+# prometheus = "0.6"
+
 [patch.crates-io]
 # Add support for Timestamp type
 rmp = { git = 'https://github.com/dani-garcia/msgpack-rust' }
@@ -114,5 +118,5 @@ rocket = { git = 'https://github.com/SergioBenitez/Rocket', rev = 'dbcb0a75b9556
 rocket_contrib = { git = 'https://github.com/SergioBenitez/Rocket', rev = 'dbcb0a75b9556763ac3ab708f40c8f8ed75f1a1e' }
 
 # Fix lettre on newer nightlies
-lettre = { version = "0.9", git = "https://github.com/lettre/lettre", rev= '0ead3cde09a02918e3976aa442329fe247f05c55' }
-lettre_email = { version = "0.9", git = "https://github.com/lettre/lettre", rev= '0ead3cde09a02918e3976aa442329fe247f05c55' }
+lettre = { version = "0.9", git = "https://github.com/lettre/lettre", rev = '0ead3cde09a02918e3976aa442329fe247f05c55' }
+lettre_email = { version = "0.9", git = "https://github.com/lettre/lettre", rev = '0ead3cde09a02918e3976aa442329fe247f05c55' }

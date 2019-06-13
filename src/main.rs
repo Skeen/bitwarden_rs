@@ -19,6 +19,8 @@ extern crate lazy_static;
 extern crate derive_more;
 #[macro_use]
 extern crate num_derive;
+#[macro_use]
+extern crate rocket_prometheus;
 
 use std::{
     path::Path,
@@ -252,6 +254,12 @@ fn launch_rocket() {
     if !CONFIG.log_mounts() {
         log::set_max_level(log::LevelFilter::max());
     }
+
+    use rocket_prometheus::PrometheusMetrics;
+    let prometheus = PrometheusMetrics::new();
+    let rocket = rocket
+        .attach(prometheus.clone())
+        .mount("/metrics", prometheus);
 
     let rocket = rocket
         .manage(db::init_pool())
