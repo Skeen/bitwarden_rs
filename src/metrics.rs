@@ -99,15 +99,24 @@ impl<'a, 'r> FromRequest<'a, 'r> for PrometheusUser {
     }
 }
  
+//#[get("/world")]
+//fn world(login: BasicAuth) -> std::string::String {
+//    return "Hello, ".to_owned() + &login.username
+//}
 
-#[get("/world")]
-fn world(login: BasicAuth) -> std::string::String {
-    return "Hello, ".to_owned() + &login.username
-}
-
-#[get("/world2")]
-fn world2(_login: PrometheusUser) -> &'static str {
-    return "Hello, prometheus"
+use rocket::State;
+use rocket_prometheus::PrometheusMetrics;
+use crate::rocket_prometheus::prometheus::Encoder;
+use rocket_prometheus::prometheus::TextEncoder;
+#[get("/")]
+fn world2(state: State<PrometheusMetrics>, _login: PrometheusUser) -> std::string::String {
+    let mut buffer = vec![];
+    let encoder = TextEncoder::new();
+    encoder
+        .encode(&state.registry().gather(), &mut buffer)
+        .unwrap();
+    let out = String::from_utf8(buffer).unwrap();
+    return out
 }
 
 // Enable prometheus metrics, if configured to do so.
@@ -139,13 +148,13 @@ pub fn metrics(rocket: rocket::Rocket) -> rocket::Rocket {
             info!("{}", message);
         }
 
-        use rocket_prometheus::PrometheusMetrics;
         let prometheus = PrometheusMetrics::new();
         return rocket
             .attach(prometheus.clone())
-            .mount(metrics_path, prometheus)
-            .mount("/hello", routes![world])
-            .mount("/hello2", routes![world2]);
+            .mount(metrics_path, routes![world2])
+            .manage(prometheus);
+            //.mount("/hello", routes![world])
+            //.mount(metrics_path, prometheus.clone())
     }
     return rocket;
 }
