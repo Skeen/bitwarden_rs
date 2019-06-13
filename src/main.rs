@@ -30,6 +30,7 @@ use std::{
 #[macro_use]
 mod error;
 mod api;
+mod metrics;
 mod auth;
 mod config;
 mod crypto;
@@ -255,11 +256,7 @@ fn launch_rocket() {
         log::set_max_level(log::LevelFilter::max());
     }
 
-    use rocket_prometheus::PrometheusMetrics;
-    let prometheus = PrometheusMetrics::new();
-    let rocket = rocket
-        .attach(prometheus.clone())
-        .mount("/metrics", prometheus);
+    let rocket = metrics::metrics(rocket);
 
     let rocket = rocket
         .manage(db::init_pool())

@@ -8,6 +8,7 @@ data
 .vscode
 .idea
 *.iml
+*.swp
 
 # Environment file
 .env

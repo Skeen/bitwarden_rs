@@ -251,6 +251,21 @@ make_config! {
 
         /// Admin page token |> The token used to authenticate in this very same page. Changing it here won't deauthorize the current session
         admin_token:            Pass,   true,   option;
+
+        /// Enable metrics exporting |> Turning this on enables exporting metrics on /metrics
+        /// or the endpoint specified by METRICS_URI. Specific metrics can be chosen using
+        /// METRICS_EXPORT.
+        metrics_enable:         bool,   false,  def,    false;
+
+        /// Endpoint for metrics exporter |> The URL where metrics will be served. Defaults
+        /// to /metrics.
+        metrics_path:           String, false,  def,    "/metrics".to_string();
+
+        /// Username
+        metrics_username:       String, true,  option;
+
+        /// Password
+        metrics_password:       Pass, true,  option;
     },
 
     /// Advanced settings
